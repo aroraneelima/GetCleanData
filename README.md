@@ -15,8 +15,9 @@ Following is the Data Set which is available for Project as given at following s
 - 'test/y_test.txt': Test labels.
 Code 
 
-Step 1: -Set the directory to desired path
-setwd("./getdata_projectfiles_UCI HAR Dataset/UCI HAR Dataset")
+Step 1: -Unzip the file and Set the directory to desired path
+unzip(zfile)
+setwd("./UCI HAR Dataset")
 
 Step 2:- Read the files, I have read in following order
 - Read the features file and keep only column 2 which are name of variable
@@ -31,27 +32,20 @@ Step 2:- Read the files, I have read in following order
 - Read Training Lables and Test Lables
   testsetY<-read.csv("./test/Y_test.txt",sep="",header = FALSE)
   trainsetY <- read.csv("./train/Y_train.txt",sep="",header = FALSE)
-- Combine the test and training Lables
-  combsetY<-rbind(testsetY,trainsetY)
-- Read the subject files for training and test data
-  trainsetSub <- read.csv("./train/subject_train.txt",sep="",header = FALSE)
-  testsetSub <- read.csv("./test/subject_test.txt",sep="",header = FALSE)
 Step 3:- Combine or Join the data read from files.
-- Combine the test and training subjects
-  combsub<-rbind(testsetSub,trainsetSub)
-- Combine the data for Test set and Train Set
+- Combines test subject, data and activities
+  testset <-cbind(testsetSub,testsetY,testsetdata)
+- Combines train subject, data and activities
+  trainset <-cbind(trainsetSub,trainsetY,trainsetdata)
+- Combine the test and training Lables
   combset<-rbind(testset,trainset)
 - Assign the variable names for combined data set from features data.
   names(combset)<-features[[1]]
 - Select only measuresment which are mean and standard deviation
-  selectset<-combset[grepl("mean|std",names(combset),ignore.case = TRUE)]
-- Join the data of Lables with Activities
-  mergelable<-merge(combsetY,activities,by.x = "V1" ,by.y = "V1")
-- Use only 2 column as we just need labels, mergelable <-mergelable[2]
-- Merge the columns of Subject, Activities and its measurement
-  finalset <- cbind(combsub,mergelable,selectset)
-  finalset <- rename(finalset,"Subject"=V1,"Activity"=V2)
+  selectset<-combset[grepl("subject|activity|mean|std",names(combset),ignore.case = TRUE)]
+- Assign Label names to Activities
+  finalset <-merge(selectset,activities,by.x = "activity", by.y = "activityid")
 - Tidy Data set with Averages each measures
-  avg<-group_by(finalset,Subject,Activity) %>% summarise_all(funs(mean))
+  avg<-selectset %>% group_by(subject,activity) %>% summarise_all(funs(mean))
 - Writing the data back to file
-  write.csv(avg,file="Tidy_data.csv",row.names = FALSE)
+  write.table(avg,file="Tidy_data.txt",sep=",",row.names = FALSE)

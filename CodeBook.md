@@ -2,20 +2,19 @@ Code book explaining the different variables used and any transformation applied
 
 - features- Features Data and transformed to remove _ and () in the variable names.
 - activities - Activities Data
-- testset- Test Data
-- trainset - Training Set
+- testsetdata- Test Data
+- trainsetdata - Training Set
 - testsetY - Test Set Labels
 - trainsetY - Training Set Labels
 - trainsetSub - Training Subject Numbers
 - testsetSub - Test Subject Numbers
-- combsetY - Combined set of Labels for Training and Test
-- combset - Combined(Total) set of Test and Training Data
+- testset - Combined set of test subject, data and activities
+- trainset - Combined set of train subject, data and activities
+- combset - Total set of training and test data
 - selectset - From Combset pick only columns which have mean and standard deviation values
-- combsub - Combined set of Subjects for Training and Test
-- mergelable - Joined Data of Labels with Activities, mapping Activities with Labels
-- finalset - Data set where column of Subjects, Activities and measured combined
+- finalset - Assign Label names to Activities
 - avg - Final result grouped by activity and subject with average value of all measures for each group.
-Row count of Tidy Data set is 35
+
 
 Variable List and their properties
 #	Variable	Datatype	Description
