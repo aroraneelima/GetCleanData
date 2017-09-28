@@ -46,8 +46,9 @@ selectset<-combset[grepl("subject|activity|mean|std",names(combset),ignore.case 
 
 # Assign Label names to Activities
 finalset <-merge(selectset,activities,by.x = "activity", by.y = "activityid")
+finalset <-select(finalset,-activity)
 # Tidy Data set with Averages each measures
-avg<-selectset %>% group_by(subject,activity) %>% summarise_all(funs(mean))
+avg<-finalset %>% group_by(subject,activityname) %>% summarise_all(funs(mean))
 
 #Writing the data back to file
 write.table(avg,file="Tidy_data.txt",sep=",",row.names = FALSE)
